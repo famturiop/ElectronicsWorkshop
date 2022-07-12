@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop", "Elec
 		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D} = {E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.Domain", "ElectronicsWorkshop.Domain\ElectronicsWorkshop.Core.Domain.csproj", "{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.Domain", "ElectronicsWorkshop.Core.Domain\ElectronicsWorkshop.Core.Domain.csproj", "{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Infrastructure", "ElectronicsWorkshop.Infrastructure\ElectronicsWorkshop.Infrastructure.csproj", "{B7285951-267B-45CA-A2AC-7B2FDA4764A7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Infrast
 		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D} = {E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.Application", "ElectronicsWorkshop.Application\ElectronicsWorkshop.Core.Application.csproj", "{58B797A2-9388-4226-82B2-24DA00B787A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.Application", "ElectronicsWorkshop.Core.Application\ElectronicsWorkshop.Core.Application.csproj", "{58B797A2-9388-4226-82B2-24DA00B787A9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D} = {A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}
 		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D} = {E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}
