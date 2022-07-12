@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop", "ElectronicsWorkshop\ElectronicsWorkshop.csproj", "{BB52D193-33D0-4FC1-BF45-E39668073704}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58B797A2-9388-4226-82B2-24DA00B787A9} = {58B797A2-9388-4226-82B2-24DA00B787A9}
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D} = {A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}
+		{B7285951-267B-45CA-A2AC-7B2FDA4764A7} = {B7285951-267B-45CA-A2AC-7B2FDA4764A7}
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D} = {E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.Domain", "ElectronicsWorkshop.Domain\ElectronicsWorkshop.Core.Domain.csproj", "{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Infrastructure", "ElectronicsWorkshop.Infrastructure\ElectronicsWorkshop.Infrastructure.csproj", "{B7285951-267B-45CA-A2AC-7B2FDA4764A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D} = {A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D} = {E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.Application", "ElectronicsWorkshop.Application\ElectronicsWorkshop.Core.Application.csproj", "{58B797A2-9388-4226-82B2-24DA00B787A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D} = {A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D} = {E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicsWorkshop.Core.DomainServices", "ElectronicsWorkshop.Core.DomainServices\ElectronicsWorkshop.Core.DomainServices.csproj", "{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D} = {A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB52D193-33D0-4FC1-BF45-E39668073704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB52D193-33D0-4FC1-BF45-E39668073704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB52D193-33D0-4FC1-BF45-E39668073704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB52D193-33D0-4FC1-BF45-E39668073704}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5C3B1DF-8A4C-49FD-A596-920AC8D9677D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7285951-267B-45CA-A2AC-7B2FDA4764A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7285951-267B-45CA-A2AC-7B2FDA4764A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7285951-267B-45CA-A2AC-7B2FDA4764A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7285951-267B-45CA-A2AC-7B2FDA4764A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B797A2-9388-4226-82B2-24DA00B787A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B797A2-9388-4226-82B2-24DA00B787A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B797A2-9388-4226-82B2-24DA00B787A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B797A2-9388-4226-82B2-24DA00B787A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E77DE5D4-FDA1-49A7-BC6D-7B15398B730D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1AFA678F-79CC-4A8F-98E8-2BFB16D0C909}
+	EndGlobalSection
+EndGlobal
