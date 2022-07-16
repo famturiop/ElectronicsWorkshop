@@ -3,15 +3,22 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
+    <Folder Include="MapperProfiles\" />
     <Folder Include="DependencyResolver\" />
-    <Folder Include="ApiModels\" />
     <Folder Include="ServicesInterfaces\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ElectronicsWorkshop.Core.DomainServices\ElectronicsWorkshop.Core.DomainServices.csproj" />
   </ItemGroup>
 
 </Project>
