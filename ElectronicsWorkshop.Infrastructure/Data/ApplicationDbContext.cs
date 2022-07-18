@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ElectronicsWorkshop.Infrastructure.Data;
 
-public class ApplicationDbContext: DbContext
+public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {

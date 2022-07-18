@@ -1,6 +1,6 @@
 ﻿namespace ElectronicsWorkshop.Core.Domain.Models;
 
-public class BaseDevice: WorkshopItem
+public class BaseDevice : WorkshopItem
 {
     public string Name { get; set; }
 

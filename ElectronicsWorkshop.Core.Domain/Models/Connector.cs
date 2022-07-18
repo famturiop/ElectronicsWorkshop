@@ -1,6 +1,6 @@
 ﻿namespace ElectronicsWorkshop.Core.Domain.Models;
 
-public class Connector: WorkshopItem
+public class Connector : WorkshopItem
 {
     public string Name { get; set; }
 

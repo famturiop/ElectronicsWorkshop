@@ -1,6 +1,6 @@
 ﻿namespace ElectronicsWorkshop.Core.Domain.Models;
 
-public class CompositeDevice: WorkshopItem
+public class CompositeDevice : WorkshopItem
 {
     public string Name { get; set; }
 
