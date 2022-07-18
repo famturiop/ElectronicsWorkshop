@@ -1,18 +1,18 @@
-using ElectronicsWorkshop.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using ElectronicsWorkshop.Core.Application.DependencyResolver;
+using ElectronicsWorkshop.Infrastructure.DependencyResolver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var config = builder.Configuration;
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.RegisterApplicationServices(config);
+builder.Services.RegisterInfrastructure(config);
 
 var app = builder.Build();
 
