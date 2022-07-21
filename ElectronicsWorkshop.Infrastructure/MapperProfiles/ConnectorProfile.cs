@@ -8,6 +8,9 @@ public class ConnectorProfile : Profile
 {
     public ConnectorProfile()
     {
-        CreateMap<Connector, ConnectorDto>().ReverseMap();
+        CreateMap<Connector, ConnectorReadDto>()
+            .ReverseMap();
+        CreateMap<ConnectorWriteDto, Connector>()
+            .ForMember(m => m.CompositeDevices, c => c.AllowNull());
     }
 }

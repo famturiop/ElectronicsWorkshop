@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ElectronicsWorkshop.Infrastructure.Repositories
 {
-    public class BaseDeviceRepository : IBaseDeviceRepository, IDisposable
+    public class BaseDeviceRepository : IBaseDeviceRepository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -19,49 +19,41 @@ namespace ElectronicsWorkshop.Infrastructure.Repositories
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<BaseDeviceDto> GetBaseDeviceAsync(int id)
+        public async Task<BaseDeviceReadDto> GetBaseDeviceAsync(int id)
         {
             var device = await _dbContext.BaseDevices.FirstOrDefaultAsync(bd => bd.Id == id);
 
-            return _mapper.Map(device, new BaseDeviceDto());
+            return _mapper.Map(device, new BaseDeviceReadDto());
         }
 
-        public async Task CreateBaseDeviceAsync(BaseDeviceDto deviceDto)
+        public async Task CreateBaseDeviceAsync(BaseDeviceWriteDto deviceDto)
         {
             if (deviceDto != null)
             {
                 var device = _mapper.Map(deviceDto, new BaseDevice());
 
                 await _dbContext.BaseDevices.AddAsync(device);
-                await _dbContext.SaveChangesAsync();
             }
         }
 
         public async Task DeleteBaseDeviceAsync(int id)
         {
-            var device = await _dbContext.BaseDevices.FirstOrDefaultAsync(bd => bd.Id == id);
+            var device = await _dbContext.BaseDevices.FindAsync(id);
 
             if (device != null)
             {
                 _dbContext.BaseDevices.Remove(device);
-                await _dbContext.SaveChangesAsync();
             }
         }
 
-        public async Task UpdateBaseDeviceAsync(BaseDeviceDto deviceDto, int id)
+        public async Task UpdateBaseDeviceAsync(BaseDeviceWriteDto deviceDto, int id)
         {
-            var device = await _dbContext.BaseDevices.FirstOrDefaultAsync(bd => bd.Id == id);
+            var device = await _dbContext.BaseDevices.FindAsync(id);
 
             if (deviceDto != null && device != null)
             {
                 _dbContext.BaseDevices.Update(_mapper.Map(deviceDto, device));
-                await _dbContext.SaveChangesAsync();
             }
-        }
-
-        public void Dispose()
-        {
-            _dbContext?.Dispose();
         }
     }
 }

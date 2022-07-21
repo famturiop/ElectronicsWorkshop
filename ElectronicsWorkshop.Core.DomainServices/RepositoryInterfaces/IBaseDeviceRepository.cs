@@ -4,11 +4,11 @@ namespace ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces;
 
 public interface IBaseDeviceRepository
 {
-    Task<BaseDeviceDto> GetBaseDeviceAsync(int id);
+    Task<BaseDeviceReadDto> GetBaseDeviceAsync(int id);
 
-    Task CreateBaseDeviceAsync(BaseDeviceDto device);
+    Task CreateBaseDeviceAsync(BaseDeviceWriteDto device);
 
     Task DeleteBaseDeviceAsync(int id);
 
-    Task UpdateBaseDeviceAsync(BaseDeviceDto device, int id);
+    Task UpdateBaseDeviceAsync(BaseDeviceWriteDto device, int id);
 }

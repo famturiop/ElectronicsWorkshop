@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ElectronicsWorkshop.Infrastructure.Repositories;
 
-public class ConnectorRepository : IConnectorRepository, IDisposable
+public class ConnectorRepository : IConnectorRepository
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -19,48 +19,66 @@ public class ConnectorRepository : IConnectorRepository, IDisposable
         _dbContext = dbContext;
         _mapper = mapper;
     }
-    public async Task<ConnectorDto> GetConnectorAsync(int id)
+    public async Task<ConnectorReadDto> GetConnectorAsync(int id)
     {
         var connector = await _dbContext.Connectors.FirstOrDefaultAsync(c => c.Id == id);
 
-        return _mapper.Map(connector, new ConnectorDto());
+        return _mapper.Map(connector, new ConnectorReadDto());
     }
 
-    public async Task CreateConnectorAsync(ConnectorDto connectorDto)
+    public async Task CreateConnectorAsync(ConnectorWriteDto connectorDto)
     {
         if (connectorDto != null)
         {
             var connector = _mapper.Map(connectorDto, new Connector());
 
             await _dbContext.Connectors.AddAsync(connector);
-            await _dbContext.SaveChangesAsync();
         }
     }
 
     public async Task DeleteConnectorAsync(int id)
     {
-        var connector = await _dbContext.Connectors.FirstOrDefaultAsync(c => c.Id == id);
+        var connector = await _dbContext.Connectors.FindAsync(id);
 
         if (connector != null)
         {
             _dbContext.Connectors.Remove(connector);
-            await _dbContext.SaveChangesAsync();
         }
     }
 
-    public async Task UpdateConnectorAsync(ConnectorDto connectorDto, int id)
+    public async Task UpdateConnectorAsync(ConnectorWriteDto connectorDto, int id)
     {
-        var connector = await _dbContext.Connectors.FirstOrDefaultAsync(bd => bd.Id == id);
+        var connector = await _dbContext.Connectors.FindAsync(id);
 
         if (connectorDto != null && connector != null)
         {
             _dbContext.Connectors.Update(_mapper.Map(connectorDto, connector));
-            await _dbContext.SaveChangesAsync();
         }
     }
 
-    public void Dispose()
+    public async Task<IEnumerable<ConnectorReadDto>> GetMultipleConnectorsAsync(IEnumerable<int> connectorIds)
     {
-        _dbContext?.Dispose();
+        var connectors = await _dbContext.Connectors
+            .Where(c => connectorIds.Any(id => id == c.Id))
+            .ToListAsync();
+
+        var connectorDtos = new List<ConnectorReadDto>();
+
+        foreach (var connector in connectors)
+        {
+            connectorDtos.Add(_mapper.Map(connector, new ConnectorReadDto()));
+        }
+
+        return connectorDtos;
+    }
+
+    private void UpdateQuantityInMultipleConnectorsAsync(IEnumerable<ConnectorReadDto> connectors)
+    {
+        foreach (var connector in connectors)
+        {
+            var updatedConnector = _mapper.Map(connector, new Connector());
+            _dbContext.Connectors.Attach(updatedConnector);
+            _dbContext.Entry(updatedConnector).Property(c => c.Quantity).IsModified = true;
+        }
     }
 }

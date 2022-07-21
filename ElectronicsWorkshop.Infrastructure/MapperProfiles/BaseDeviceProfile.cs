@@ -8,6 +8,9 @@ public class BaseDeviceProfile : Profile
 {
     public BaseDeviceProfile()
     {
-        CreateMap<BaseDevice, BaseDeviceDto>().ReverseMap();
+        CreateMap<BaseDevice, BaseDeviceReadDto>()
+            .ReverseMap();
+        CreateMap<BaseDeviceWriteDto, BaseDevice>()
+            .ForMember(m => m.CompositeDevices, c => c.AllowNull());
     }
 }

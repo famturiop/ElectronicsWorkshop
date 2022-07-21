@@ -4,12 +4,12 @@ namespace ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces
 {
     public interface ICompositeDeviceRepository
     {
-        Task<CompositeDeviceDto> GetCompositeDeviceAsync(int id);
+        Task<CompositeDeviceReadDto> GetCompositeDeviceAsync(int id);
 
-        Task CreateCompositeDeviceAsync(CompositeDeviceDto device);
+        Task CreateCompositeDeviceAsync(CompositeDeviceWriteDto device);
 
         Task DeleteCompositeDeviceAsync(int id);
 
-        Task UpdateCompositeDeviceAsync(CompositeDeviceDto device, int id);
+        Task UpdateCompositeDeviceAsync(CompositeDeviceUpdateDto device, int id);
     }
 }
