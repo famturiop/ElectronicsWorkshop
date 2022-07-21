@@ -20,8 +20,6 @@ public static class ServiceCollectionExtensions
             typeof(CompositeDeviceProfile),
             typeof(ConnectorProfile));
 
-        services.AddScoped<IBaseDeviceRepository, IBaseDeviceRepository>();
-        services.AddScoped<ICompositeDeviceRepository, ICompositeDeviceRepository>();
-        services.AddScoped<IConnectorRepository, ConnectorRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
