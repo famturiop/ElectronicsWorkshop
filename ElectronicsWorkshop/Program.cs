@@ -1,4 +1,5 @@
 using ElectronicsWorkshop.Core.Application.DependencyResolver;
+using ElectronicsWorkshop.Extensions;
 using ElectronicsWorkshop.Infrastructure.DependencyResolver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ var config = builder.Configuration;
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(config);
 
 builder.Services.RegisterApplicationServices(config);
 builder.Services.RegisterInfrastructure(config);

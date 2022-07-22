@@ -1,6 +1,7 @@
 ﻿using ElectronicsWorkshop.Core.Application.ApiModels;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ElectronicsWorkshop.Controllers
 {
@@ -15,14 +16,38 @@ namespace ElectronicsWorkshop.Controllers
             _compositeDeviceService = compositeDeviceService;
         }
 
-        // GET api/<CompositeDeviceController>/5
+
+        /// <summary>
+        /// Gets a composite device.
+        /// </summary>
+        [SwaggerOperation(
+            Description = "Gets a composite device." +
+                          "Quantity is the amount of devices stored at the workshop." +
+                          "Price is the combined price of all of the composite device's parts." +
+                          "Name is the device's name." +
+                          "Id is the URI in the database." +
+                          "BaseDevice is a founding part of a composite device. (for example Laptop Motherboard)" +
+                          "Connectors are parts that responsible for connecting to other devices. (for example USB)",
+            Summary = "Gets a composite device")]
         [HttpGet("{id}")]
         public async Task<ActionResult<CompositeDeviceRead>> Get(int id)
         {
             return await _compositeDeviceService.GetCompositeDeviceAsync(id);
         }
 
-        // POST api/<CompositeDeviceController>
+        /// <summary>
+        /// Creates a composite device.  
+        /// </summary>
+        [SwaggerOperation(
+            Description = "Creates a composite device." +
+                          "A composite device has to have one BaseDevice " + 
+                          " and can have zero or one of each connector type." +
+                          "Available BaseDevices and Connectors IDs are in the range of 1 to 8." +
+                          "The amount of each part (i.e. a connector or BaseDevice) " +
+                          "used to create a composite device is set by Quantity property." +
+                          "If workshop has enough of each part then the value of Quantity " + 
+                          " is subtracted from each part's Quantity value and operation succeeds.",
+            Summary = "Creates a composite device")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CompositeDeviceWrite device)
         {
@@ -30,7 +55,18 @@ namespace ElectronicsWorkshop.Controllers
             return Ok();
         }
 
-        // PUT api/<CompositeDeviceController>/5
+        /// <summary>
+        /// Updates a composite device.
+        /// </summary>
+        [SwaggerOperation(
+            Description = "Updates a composite device." +
+                          "The Name and the Quantity of the composite device can be changed." +
+                          "Quantity value is added to the existing " + 
+                          " Quantity value of the composite device in the database." +
+                          "It represents the amount of new composite devices a workshop creates." +
+                          "Consequently the workshop has to have enough parts" + 
+                          " to create new composite devices for operation to succeed.",
+            Summary = "Updates a composite device")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CompositeDeviceUpdate device)
         {
@@ -38,7 +74,12 @@ namespace ElectronicsWorkshop.Controllers
             return Ok();
         }
 
-        // DELETE api/<CompositeDeviceController>/5
+        /// <summary>
+        /// Deletes a composite device.
+        /// </summary>
+        [SwaggerOperation(
+            Description = "Deletes a composite device",
+            Summary = "Deletes a composite device")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
