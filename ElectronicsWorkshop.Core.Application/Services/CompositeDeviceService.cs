@@ -2,6 +2,7 @@
 using ElectronicsWorkshop.Core.Application.ApiModels;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
 using ElectronicsWorkshop.Core.Domain.DTOs;
+using ElectronicsWorkshop.Core.DomainServices.DomainServicesInterfaces;
 using ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces;
 
 namespace ElectronicsWorkshop.Core.Application.Services;
@@ -10,13 +11,16 @@ public class CompositeDeviceService : ICompositeDeviceService
 {
     private readonly IUnitOfWork _repositories;
     private readonly IMapper _mapper;
+    private readonly ICompositeDeviceCoreRules _coreBusinessRules;
 
     public CompositeDeviceService(
         IUnitOfWork repositories,
-        IMapper mapper)
+        IMapper mapper, 
+        ICompositeDeviceCoreRules coreBusinessRules)
     {
         _repositories = repositories;
         _mapper = mapper;
+        _coreBusinessRules = coreBusinessRules;
     }
     public async Task<CompositeDeviceRead> GetCompositeDeviceAsync(int id)
     {
@@ -31,16 +35,18 @@ public class CompositeDeviceService : ICompositeDeviceService
         var connectors =
             (await _repositories.Connectors.GetMultipleConnectorsAsync(deviceApiModel.ConnectorIds)).ToList();
 
-        if (CanSubtractQuantityFrom(baseDevice, connectors, deviceApiModel.Quantity))
+        if (_coreBusinessRules.CanSubtractQuantityFrom(baseDevice, connectors, deviceApiModel.Quantity))
         {
-            await SubtractQuantityFrom(baseDevice, connectors, deviceApiModel.Quantity);
+            _coreBusinessRules.SubtractQuantityFrom(baseDevice, connectors, deviceApiModel.Quantity);
+
+            await UpdateCompositeDeviceParts(baseDevice, connectors);
 
             var compositeDeviceDto = new CompositeDeviceWriteDto
             {
                 Basis = baseDevice,
                 Connectors = connectors,
                 Name = deviceApiModel.Name,
-                Price = CalculatePrice(baseDevice, connectors),
+                Price = _coreBusinessRules.CalculatePrice(baseDevice, connectors),
                 Quantity = deviceApiModel.Quantity
             };
             await _repositories.CompositeDevices.CreateCompositeDeviceAsync(compositeDeviceDto);
@@ -52,9 +58,13 @@ public class CompositeDeviceService : ICompositeDeviceService
     {
         var compositeDevice = await _repositories.CompositeDevices.GetCompositeDeviceAsync(id);
 
-        if (CanSubtractQuantityFrom(compositeDevice.Basis, compositeDevice.Connectors, deviceApiModel.Quantity))
+        if (_coreBusinessRules.CanSubtractQuantityFrom(
+                compositeDevice.Basis, compositeDevice.Connectors, deviceApiModel.Quantity))
         {
-            await SubtractQuantityFrom(compositeDevice.Basis, compositeDevice.Connectors, deviceApiModel.Quantity);
+            _coreBusinessRules.SubtractQuantityFrom(
+                compositeDevice.Basis, compositeDevice.Connectors, deviceApiModel.Quantity);
+
+            await UpdateCompositeDeviceParts(compositeDevice.Basis, compositeDevice.Connectors);
 
             var compositeDeviceDto = new CompositeDeviceUpdateDto
             {
@@ -73,14 +83,10 @@ public class CompositeDeviceService : ICompositeDeviceService
         await _repositories.SaveChangesAsync();
     }
 
-    private async Task SubtractQuantityFrom(
+    private async Task UpdateCompositeDeviceParts(
         BaseDeviceReadDto baseDevice,
-        List<ConnectorReadDto> connectors,
-        int quantityToSubtract)
+        List<ConnectorReadDto> connectors)
     {
-        baseDevice.Quantity -= quantityToSubtract;
-        connectors.ForEach(c => c.Quantity -= quantityToSubtract);
-
         await _repositories.BaseDevices.UpdateBaseDeviceAsync(
             _mapper.Map(baseDevice, new BaseDeviceWriteDto()), baseDevice.Id);
         foreach (var connector in connectors)
@@ -88,19 +94,5 @@ public class CompositeDeviceService : ICompositeDeviceService
             await _repositories.Connectors.UpdateConnectorAsync(
                 _mapper.Map(connector, new ConnectorWriteDto()), connector.Id);
         }
-    }
-
-    private bool CanSubtractQuantityFrom(
-        BaseDeviceReadDto baseDevice,
-        List<ConnectorReadDto> connectors,
-        int quantityToSubtract)
-    {
-        return baseDevice.Quantity >= quantityToSubtract &&
-                connectors.TrueForAll(c => c.Quantity >= quantityToSubtract);
-    }
-
-    private decimal CalculatePrice(BaseDeviceReadDto baseDevice, List<ConnectorReadDto> connectors)
-    {
-        return baseDevice.Price + connectors.Aggregate(0m, (i, c) => i + c.Price);
     }
 }
