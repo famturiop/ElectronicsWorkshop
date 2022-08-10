@@ -4,10 +4,9 @@ namespace ElectronicsWorkshop.Core.DomainServices.DomainServicesInterfaces;
 
 public interface ICompositeDeviceCoreRules
 {
-    bool CanSubtractQuantityFrom(
-        BaseDeviceReadDto baseDevice,
-        List<ConnectorReadDto> connectors,
-        int quantityToSubtract);
+    public bool HaveEnoughBaseDevices(BaseDeviceReadDto baseDevice, int quantityRequired);
+
+    public bool HaveEnoughConnectors(List<ConnectorReadDto> connectors, int quantityRequired);
 
     void SubtractQuantityFrom(
         BaseDeviceReadDto baseDevice,

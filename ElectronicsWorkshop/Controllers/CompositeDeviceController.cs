@@ -1,4 +1,5 @@
 ﻿using ElectronicsWorkshop.Core.Application.ApiModels;
+using ElectronicsWorkshop.Core.Application.Responses;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -7,7 +8,7 @@ namespace ElectronicsWorkshop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompositeDeviceController : ControllerBase
+    public class CompositeDeviceController : BaseController
     {
         private readonly ICompositeDeviceService _compositeDeviceService;
 
@@ -32,7 +33,14 @@ namespace ElectronicsWorkshop.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CompositeDeviceRead>> Get(int id)
         {
-            return await _compositeDeviceService.GetCompositeDeviceAsync(id);
+            var response = await _compositeDeviceService.GetCompositeDeviceAsync(id);
+
+            if (response.Success)
+            {
+                return Ok(response.CompositeDevice);
+            }
+
+            return StatusCode(response);
         }
 
         /// <summary>
@@ -51,8 +59,12 @@ namespace ElectronicsWorkshop.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CompositeDeviceWrite device)
         {
-            await _compositeDeviceService.CreateCompositeDeviceAsync(device);
-            return Ok();
+            var response = await _compositeDeviceService.CreateCompositeDeviceAsync(device);
+
+            if (response.Success)
+                return Ok();
+
+            return StatusCode(response);
         }
 
         /// <summary>
@@ -70,8 +82,12 @@ namespace ElectronicsWorkshop.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CompositeDeviceUpdate device)
         {
-            await _compositeDeviceService.UpdateCompositeDeviceAsync(device, id);
-            return Ok();
+            var response = await _compositeDeviceService.UpdateCompositeDeviceAsync(device, id);
+
+            if (response.Success)
+                return Ok();
+
+            return StatusCode(response);
         }
 
         /// <summary>
@@ -83,8 +99,12 @@ namespace ElectronicsWorkshop.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _compositeDeviceService.DeleteCompositeDeviceAsync(id);
-            return Ok();
+            var response = await _compositeDeviceService.DeleteCompositeDeviceAsync(id);
+
+            if (response.Success)
+                return Ok();
+
+            return StatusCode(response);
         }
     }
 }

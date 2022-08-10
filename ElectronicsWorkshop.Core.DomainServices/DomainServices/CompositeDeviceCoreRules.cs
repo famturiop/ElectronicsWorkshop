@@ -5,13 +5,14 @@ namespace ElectronicsWorkshop.Core.DomainServices.DomainServices;
 
 public class CompositeDeviceCoreRules: ICompositeDeviceCoreRules
 {
-    public bool CanSubtractQuantityFrom(
-        BaseDeviceReadDto baseDevice, 
-        List<ConnectorReadDto> connectors, 
-        int quantityToSubtract)
+    public bool HaveEnoughBaseDevices(BaseDeviceReadDto baseDevice, int quantityRequired)
     {
-        return baseDevice.Quantity >= quantityToSubtract &&
-               connectors.TrueForAll(c => c.Quantity >= quantityToSubtract);
+        return baseDevice.Quantity >= quantityRequired;
+    }
+
+    public bool HaveEnoughConnectors(List<ConnectorReadDto> connectors, int quantityRequired)
+    {
+        return connectors.TrueForAll(c => c.Quantity >= quantityRequired);
     }
 
     public void SubtractQuantityFrom(

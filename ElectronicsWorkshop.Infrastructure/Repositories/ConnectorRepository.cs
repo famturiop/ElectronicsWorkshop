@@ -56,7 +56,7 @@ public class ConnectorRepository : IConnectorRepository
         }
     }
 
-    public async Task<IEnumerable<ConnectorReadDto>> GetMultipleConnectorsAsync(IEnumerable<int> connectorIds)
+    public async Task<IEnumerable<ConnectorReadDto>> GetVariableAmountOfConnectorsAsync(IEnumerable<int> connectorIds)
     {
         var connectors = await _dbContext.Connectors
             .Where(c => connectorIds.Any(id => id == c.Id))

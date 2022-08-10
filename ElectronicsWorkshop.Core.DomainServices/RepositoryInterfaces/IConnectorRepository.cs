@@ -12,5 +12,5 @@ public interface IConnectorRepository
 
     Task UpdateConnectorAsync(ConnectorWriteDto device, int id);
 
-    Task<IEnumerable<ConnectorReadDto>> GetMultipleConnectorsAsync(IEnumerable<int> connectorIds);
+    Task<IEnumerable<ConnectorReadDto>> GetVariableAmountOfConnectorsAsync(IEnumerable<int> connectorIds);
 }
