@@ -1,6 +1,10 @@
-﻿using ElectronicsWorkshop.Core.Application.MapperProfiles;
+﻿using ElectronicsWorkshop.Core.Application.ApiModels;
+using ElectronicsWorkshop.Core.Application.MapperProfiles;
+using ElectronicsWorkshop.Core.Application.Responses;
 using ElectronicsWorkshop.Core.Application.Services;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
+using ElectronicsWorkshop.Core.Application.Validators;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,5 +18,8 @@ public static class ServiceCollectionsExtension
             typeof(CompositeDeviceProfile));
 
         services.AddScoped<ICompositeDeviceService, CompositeDeviceService>();
+        services.AddScoped<ResponseFactory>();
+        services.AddScoped<IValidator<CompositeDeviceWrite>, CompositeDeviceWriteValidator>();
+        services.AddScoped<IValidator<CompositeDeviceUpdate>, CompositeDeviceUpdateValidator>();
     }
 }
