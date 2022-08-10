@@ -17,25 +17,25 @@ public class CompositeDeviceService : ICompositeDeviceService
 {
     private readonly IUnitOfWork _repositories;
     private readonly IMapper _mapper;
-    private readonly ICompositeDeviceCoreRules _coreBusinessRules;
     private readonly ResponseFactory _responseFactory;
     private readonly IValidator<CompositeDeviceWrite> _writeValidator;
     private readonly IValidator<CompositeDeviceUpdate> _updateValidator;
+    private readonly ICompositeDeviceFactory _compositeDeviceFactory;
 
     public CompositeDeviceService(
         IUnitOfWork repositories,
-        IMapper mapper, 
-        ICompositeDeviceCoreRules coreBusinessRules,
+        IMapper mapper,
         ResponseFactory responseFactory,
         IValidator<CompositeDeviceWrite> writeValidator,
-        IValidator<CompositeDeviceUpdate> updateValidator)
+        IValidator<CompositeDeviceUpdate> updateValidator,
+        ICompositeDeviceFactory compositeDeviceFactory)
     {
         _repositories = repositories;
         _mapper = mapper;
-        _coreBusinessRules = coreBusinessRules;
         _responseFactory = responseFactory;
         _writeValidator = writeValidator;
         _updateValidator = updateValidator;
+        _compositeDeviceFactory = compositeDeviceFactory;
     }
     public async Task<CompositeDeviceResponse> GetCompositeDeviceAsync(int id)
     {
@@ -83,21 +83,12 @@ public class CompositeDeviceService : ICompositeDeviceService
                 HttpStatusCode.NotFound);
         }
 
-        if (_coreBusinessRules.HaveEnoughBaseDevices(baseDevice, deviceApiModel.Quantity) &&
-            _coreBusinessRules.HaveEnoughConnectors(connectors, deviceApiModel.Quantity))
+        if (_compositeDeviceFactory.HaveEnoughBaseDevices(baseDevice, deviceApiModel.Quantity) &&
+            _compositeDeviceFactory.HaveEnoughConnectors(connectors, deviceApiModel.Quantity))
         {
-            _coreBusinessRules.SubtractQuantityFrom(baseDevice, connectors, deviceApiModel.Quantity);
+            var compositeDeviceDto = await 
+                _compositeDeviceFactory.ConstructCompositeDeviceWriteDto(baseDevice, connectors, deviceApiModel);
 
-            await UpdateCompositeDeviceParts(baseDevice, connectors);
-
-            var compositeDeviceDto = new CompositeDeviceWriteDto
-            {
-                Basis = baseDevice,
-                Connectors = connectors,
-                Name = deviceApiModel.Name,
-                Price = _coreBusinessRules.CalculatePrice(baseDevice, connectors),
-                Quantity = deviceApiModel.Quantity
-            };
             await _repositories.CompositeDevices.CreateCompositeDeviceAsync(compositeDeviceDto);
             await _repositories.SaveChangesAsync();
 
@@ -121,19 +112,11 @@ public class CompositeDeviceService : ICompositeDeviceService
                 ResponseMessages.WorkshopItemNotFound(id),
                 HttpStatusCode.NotFound);
 
-        if (_coreBusinessRules.HaveEnoughBaseDevices(compositeDevice.Basis, deviceApiModel.Quantity) &&
-            _coreBusinessRules.HaveEnoughConnectors(compositeDevice.Connectors, deviceApiModel.Quantity))
+        if (_compositeDeviceFactory.HaveEnoughBaseDevices(compositeDevice.Basis, deviceApiModel.Quantity) &&
+            _compositeDeviceFactory.HaveEnoughConnectors(compositeDevice.Connectors, deviceApiModel.Quantity))
         {
-            _coreBusinessRules.SubtractQuantityFrom(
-                compositeDevice.Basis, compositeDevice.Connectors, deviceApiModel.Quantity);
-
-            await UpdateCompositeDeviceParts(compositeDevice.Basis, compositeDevice.Connectors);
-
-            var compositeDeviceDto = new CompositeDeviceUpdateDto
-            {
-                Name = deviceApiModel.Name,
-                Quantity = compositeDevice.Quantity + deviceApiModel.Quantity
-            };
+            var compositeDeviceDto = await 
+                _compositeDeviceFactory.ConstructCompositeDeviceUpdateDto(compositeDevice, deviceApiModel);
 
             await _repositories.CompositeDevices.UpdateCompositeDeviceAsync(compositeDeviceDto, id);
             await _repositories.SaveChangesAsync();

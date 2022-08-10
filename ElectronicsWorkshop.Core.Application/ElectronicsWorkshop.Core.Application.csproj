@@ -12,7 +12,6 @@
     <Folder Include="Validators\" />
     <Folder Include="Responses\" />
     <Folder Include="ServicesInterfaces\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

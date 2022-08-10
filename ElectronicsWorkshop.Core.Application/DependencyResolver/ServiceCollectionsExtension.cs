@@ -4,6 +4,7 @@ using ElectronicsWorkshop.Core.Application.Responses;
 using ElectronicsWorkshop.Core.Application.Services;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
 using ElectronicsWorkshop.Core.Application.Validators;
+using ElectronicsWorkshop.Core.DomainServices.DomainServicesInterfaces;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,5 +22,7 @@ public static class ServiceCollectionsExtension
         services.AddScoped<ResponseFactory>();
         services.AddScoped<IValidator<CompositeDeviceWrite>, CompositeDeviceWriteValidator>();
         services.AddScoped<IValidator<CompositeDeviceUpdate>, CompositeDeviceUpdateValidator>();
+        services.AddScoped<IPriceCalculator, PriceCalculator>();
+        services.AddScoped<ICompositeDeviceFactory, CompositeDeviceFactory>();
     }
 }

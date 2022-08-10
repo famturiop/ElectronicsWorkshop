@@ -1,5 +1,4 @@
 using ElectronicsWorkshop.Core.Application.DependencyResolver;
-using ElectronicsWorkshop.Core.DomainServices.DependencyResolver;
 using ElectronicsWorkshop.Extensions;
 using ElectronicsWorkshop.Infrastructure.DependencyResolver;
 
@@ -15,7 +14,6 @@ builder.Services.AddSwaggerGen(config);
 
 builder.Services.RegisterApplicationServices(config);
 builder.Services.RegisterInfrastructure(config);
-builder.Services.RegisterCoreBusinessRules();
 
 var app = builder.Build();
 
