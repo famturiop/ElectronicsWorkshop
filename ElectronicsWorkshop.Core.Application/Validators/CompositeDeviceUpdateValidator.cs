@@ -8,6 +8,6 @@ public class CompositeDeviceUpdateValidator : AbstractValidator<CompositeDeviceU
     public CompositeDeviceUpdateValidator()
     {
         RuleFor(c => c.Name).Length(3, 30).NotEmpty();
-        RuleFor(c => c.Quantity).GreaterThan(0).NotEmpty();
+        RuleFor(c => c.Quantity).GreaterThanOrEqualTo(0);
     }
 }
