@@ -1,10 +1,9 @@
-﻿using System.Net;
-using ElectronicsWorkshop.Core.Application.Responses;
+﻿using ElectronicsWorkshop.Core.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicsWorkshop.Controllers;
 
-public abstract class BaseController: ControllerBase
+public abstract class BaseController : ControllerBase
 {
     [NonAction]
     protected ObjectResult ErrorStatusCode(BaseResponse response)

@@ -1,5 +1,4 @@
 ﻿using ElectronicsWorkshop.Core.Application.ApiModels;
-using ElectronicsWorkshop.Core.Application.Responses;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -48,12 +47,12 @@ namespace ElectronicsWorkshop.Controllers
         /// </summary>
         [SwaggerOperation(
             Description = "Creates a composite device." +
-                          "A composite device has to have one BaseDevice " + 
+                          "A composite device has to have one BaseDevice " +
                           " and can have zero or one of each connector type." +
                           "Available BaseDevices and Connectors IDs are in the range of 1 to 8." +
                           "The amount of each part (i.e. a connector or BaseDevice) " +
                           "used to create a composite device is set by Quantity property." +
-                          "If workshop has enough of each part then the value of Quantity " + 
+                          "If workshop has enough of each part then the value of Quantity " +
                           " is subtracted from each part's Quantity value and operation succeeds.",
             Summary = "Creates a composite device")]
         [HttpPost]
@@ -73,10 +72,10 @@ namespace ElectronicsWorkshop.Controllers
         [SwaggerOperation(
             Description = "Updates a composite device." +
                           "The Name and the Quantity of the composite device can be changed." +
-                          "Quantity value is added to the existing " + 
+                          "Quantity value is added to the existing " +
                           " Quantity value of the composite device in the database." +
                           "It represents the amount of new composite devices a workshop creates." +
-                          "Consequently the workshop has to have enough parts" + 
+                          "Consequently the workshop has to have enough parts" +
                           " to create new composite devices for operation to succeed.",
             Summary = "Updates a composite device")]
         [HttpPut("{id}")]

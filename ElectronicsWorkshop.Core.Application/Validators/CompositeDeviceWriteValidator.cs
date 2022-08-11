@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace ElectronicsWorkshop.Core.Application.Validators;
 
-public class CompositeDeviceWriteValidator: AbstractValidator<CompositeDeviceWrite>
+public class CompositeDeviceWriteValidator : AbstractValidator<CompositeDeviceWrite>
 {
     public CompositeDeviceWriteValidator()
     {

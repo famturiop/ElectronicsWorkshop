@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace ElectronicsWorkshop.Core.Domain.Constants;
+﻿namespace ElectronicsWorkshop.Core.Domain.Constants;
 
 public static class ResponseMessages
 {
@@ -19,7 +17,7 @@ public static class ResponseMessages
 
     public const string IdNotNegative = "Id can not be negative";
 
-    public const string CoreRulesViolation = "You are violating core business rules. " + 
+    public const string CoreRulesViolation = "You are violating core business rules. " +
                                              "Workshop does not have enough Connectors or Base Devices " +
                                              "to construct CompositeDevice";
 }

@@ -7,15 +7,15 @@ using ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces;
 
 namespace ElectronicsWorkshop.Core.Application.Services;
 
-public class CompositeDeviceFactory: ICompositeDeviceFactory
+public class CompositeDeviceFactory : ICompositeDeviceFactory
 {
     private readonly IUnitOfWork _repositories;
     private readonly IMapper _mapper;
     private readonly IPriceCalculator _priceCalculator;
 
     public CompositeDeviceFactory(
-        IUnitOfWork repositories, 
-        IMapper mapper, 
+        IUnitOfWork repositories,
+        IMapper mapper,
         IPriceCalculator priceCalculator)
     {
         _repositories = repositories;
@@ -35,7 +35,7 @@ public class CompositeDeviceFactory: ICompositeDeviceFactory
 
     public async Task<CompositeDeviceWriteDto> ConstructCompositeDeviceWriteDto(
         BaseDeviceReadDto baseDevice,
-        List<ConnectorReadDto> connectors, 
+        List<ConnectorReadDto> connectors,
         CompositeDeviceWrite deviceApiModel)
     {
         SubtractQuantityFrom(baseDevice, connectors, deviceApiModel.Quantity);

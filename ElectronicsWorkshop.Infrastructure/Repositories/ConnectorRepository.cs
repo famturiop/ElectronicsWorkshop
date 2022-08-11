@@ -71,14 +71,4 @@ public class ConnectorRepository : IConnectorRepository
 
         return connectorDtos;
     }
-
-    private void UpdateQuantityInMultipleConnectorsAsync(IEnumerable<ConnectorReadDto> connectors)
-    {
-        foreach (var connector in connectors)
-        {
-            var updatedConnector = _mapper.Map(connector, new Connector());
-            _dbContext.Connectors.Attach(updatedConnector);
-            _dbContext.Entry(updatedConnector).Property(c => c.Quantity).IsModified = true;
-        }
-    }
 }

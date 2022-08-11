@@ -58,7 +58,8 @@ public class CompositeDeviceRepository : ICompositeDeviceRepository
 
         if (deviceDto != null && device != null)
         {
-            await SetTrackedEntities(device);
+            await _dbContext.Entry(device).Reference(d => d.Basis).LoadAsync();
+            await _dbContext.Entry(device).Collection(c => c.Connectors).LoadAsync();
             _dbContext.CompositeDevices.Update(_mapper.Map(deviceDto, device));
         }
     }
@@ -72,19 +73,5 @@ public class CompositeDeviceRepository : ICompositeDeviceRepository
             connectors.Add(await _dbContext.Connectors.FindAsync(connector.Id));
         }
         device.Connectors = connectors;
-    }
-
-    private async Task AddConnectorsAsync(IEnumerable<int> connectorIds, int id)
-    {
-
-        var device = await _dbContext.CompositeDevices
-            .Include(d => d.Connectors)
-            .FirstOrDefaultAsync(d => d.Id == id);
-
-        var connectors = await _dbContext.Connectors
-            .Where(c => connectorIds.Any(id => id == c.Id))
-            .ToListAsync();
-
-        device.Connectors.AddRange(connectors);
     }
 }

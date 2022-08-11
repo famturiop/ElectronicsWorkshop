@@ -1,14 +1,12 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using ElectronicsWorkshop.Core.Application.ApiModels;
 using ElectronicsWorkshop.Core.Application.Responses;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
 using ElectronicsWorkshop.Core.Domain.Constants;
-using ElectronicsWorkshop.Core.Domain.DTOs;
-using ElectronicsWorkshop.Core.DomainServices.DomainServicesInterfaces;
 using ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces;
 using FluentValidation;
 using FluentValidation.Results;
+using System.Net;
 
 
 namespace ElectronicsWorkshop.Core.Application.Services;
@@ -70,7 +68,7 @@ public class CompositeDeviceService : ICompositeDeviceService
 
         if (baseDevice == null)
             return _responseFactory.Failure<WorkshopItemResponse>(
-                ResponseMessages.WorkshopItemNotFound(deviceApiModel.BasisId), 
+                ResponseMessages.WorkshopItemNotFound(deviceApiModel.BasisId),
                 HttpStatusCode.NotFound);
 
         var connectors =
@@ -88,7 +86,7 @@ public class CompositeDeviceService : ICompositeDeviceService
         if (_compositeDeviceFactory.HaveEnoughBaseDevices(baseDevice, deviceApiModel.Quantity) &&
             _compositeDeviceFactory.HaveEnoughConnectors(connectors, deviceApiModel.Quantity))
         {
-            var compositeDeviceDto = await 
+            var compositeDeviceDto = await
                 _compositeDeviceFactory.ConstructCompositeDeviceWriteDto(baseDevice, connectors, deviceApiModel);
 
             var item = await _repositories.CompositeDevices.CreateCompositeDeviceAsync(compositeDeviceDto);
@@ -119,7 +117,7 @@ public class CompositeDeviceService : ICompositeDeviceService
         if (_compositeDeviceFactory.HaveEnoughBaseDevices(compositeDevice.Basis, deviceApiModel.Quantity) &&
             _compositeDeviceFactory.HaveEnoughConnectors(compositeDevice.Connectors, deviceApiModel.Quantity))
         {
-            var compositeDeviceDto = await 
+            var compositeDeviceDto = await
                 _compositeDeviceFactory.ConstructCompositeDeviceUpdateDto(compositeDevice, deviceApiModel);
 
             await _repositories.CompositeDevices.UpdateCompositeDeviceAsync(compositeDeviceDto, id);

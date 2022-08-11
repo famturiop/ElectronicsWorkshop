@@ -1,6 +1,6 @@
-﻿using System.Net;
-using ElectronicsWorkshop.Core.Application.ApiModels;
+﻿using ElectronicsWorkshop.Core.Application.ApiModels;
 using ElectronicsWorkshop.Core.Domain.Models;
+using System.Net;
 
 namespace ElectronicsWorkshop.Core.Application.Responses;
 
@@ -22,7 +22,7 @@ public class ResponseFactory
     public CompositeDeviceResponse Success(CompositeDeviceRead compositeDevice)
     {
         var baseResponse = Success();
-        
+
         return new CompositeDeviceResponse()
         {
             Success = baseResponse.Success,
