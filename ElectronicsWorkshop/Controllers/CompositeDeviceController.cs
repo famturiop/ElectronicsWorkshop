@@ -40,7 +40,7 @@ namespace ElectronicsWorkshop.Controllers
                 return Ok(response.CompositeDevice);
             }
 
-            return StatusCode(response);
+            return ErrorStatusCode(response);
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace ElectronicsWorkshop.Controllers
             var response = await _compositeDeviceService.CreateCompositeDeviceAsync(device);
 
             if (response.Success)
-                return Ok();
+                return CreatedAtAction(nameof(Get), new { response.Item.Id }, response.Item.Id);
 
-            return StatusCode(response);
+            return ErrorStatusCode(response);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace ElectronicsWorkshop.Controllers
             if (response.Success)
                 return Ok();
 
-            return StatusCode(response);
+            return ErrorStatusCode(response);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace ElectronicsWorkshop.Controllers
             if (response.Success)
                 return Ok();
 
-            return StatusCode(response);
+            return ErrorStatusCode(response);
         }
     }
 }

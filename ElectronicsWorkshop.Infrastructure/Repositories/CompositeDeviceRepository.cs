@@ -29,14 +29,17 @@ public class CompositeDeviceRepository : ICompositeDeviceRepository
         return _mapper.Map(device, new CompositeDeviceReadDto());
     }
 
-    public async Task CreateCompositeDeviceAsync(CompositeDeviceWriteDto deviceDto)
+    public async Task<WorkshopItem> CreateCompositeDeviceAsync(CompositeDeviceWriteDto deviceDto)
     {
         if (deviceDto != null)
         {
             var device = _mapper.Map(deviceDto, new CompositeDevice());
             await SetTrackedEntities(device);
             await _dbContext.CompositeDevices.AddAsync(device);
+
+            return device;
         }
+        return null;
     }
 
     public async Task DeleteCompositeDeviceAsync(int id)

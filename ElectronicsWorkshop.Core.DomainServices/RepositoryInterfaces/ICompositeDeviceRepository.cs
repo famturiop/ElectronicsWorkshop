@@ -1,4 +1,5 @@
 ﻿using ElectronicsWorkshop.Core.Domain.DTOs;
+using ElectronicsWorkshop.Core.Domain.Models;
 
 namespace ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces
 {
@@ -6,7 +7,7 @@ namespace ElectronicsWorkshop.Core.DomainServices.RepositoryInterfaces
     {
         Task<CompositeDeviceReadDto> GetCompositeDeviceAsync(int id);
 
-        Task CreateCompositeDeviceAsync(CompositeDeviceWriteDto device);
+        Task<WorkshopItem> CreateCompositeDeviceAsync(CompositeDeviceWriteDto device);
 
         Task DeleteCompositeDeviceAsync(int id);
 

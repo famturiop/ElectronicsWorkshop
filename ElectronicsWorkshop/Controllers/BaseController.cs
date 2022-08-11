@@ -7,7 +7,7 @@ namespace ElectronicsWorkshop.Controllers;
 public abstract class BaseController: ControllerBase
 {
     [NonAction]
-    protected ObjectResult StatusCode(BaseResponse response)
+    protected ObjectResult ErrorStatusCode(BaseResponse response)
     {
         return StatusCode((int)response.StatusCode, response.ErrorMessage);
     }

@@ -1,10 +1,24 @@
 ﻿using System.Net;
 using ElectronicsWorkshop.Core.Application.ApiModels;
+using ElectronicsWorkshop.Core.Domain.Models;
 
 namespace ElectronicsWorkshop.Core.Application.Responses;
 
 public class ResponseFactory
 {
+    public WorkshopItemResponse Success(WorkshopItem item)
+    {
+        var baseResponse = Success();
+
+        return new WorkshopItemResponse()
+        {
+            Success = baseResponse.Success,
+            ErrorMessage = baseResponse.ErrorMessage,
+            Item = item,
+            StatusCode = HttpStatusCode.Created
+        };
+    }
+
     public CompositeDeviceResponse Success(CompositeDeviceRead compositeDevice)
     {
         var baseResponse = Success();

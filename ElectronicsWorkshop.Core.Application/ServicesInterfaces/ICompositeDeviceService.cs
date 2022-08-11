@@ -7,7 +7,7 @@ public interface ICompositeDeviceService
 {
     Task<CompositeDeviceResponse> GetCompositeDeviceAsync(int id);
 
-    Task<BaseResponse> CreateCompositeDeviceAsync(CompositeDeviceWrite device);
+    Task<WorkshopItemResponse> CreateCompositeDeviceAsync(CompositeDeviceWrite device);
 
     Task<BaseResponse> UpdateCompositeDeviceAsync(CompositeDeviceUpdate device, int id);
 

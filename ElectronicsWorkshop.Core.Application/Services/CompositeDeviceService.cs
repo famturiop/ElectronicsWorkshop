@@ -57,17 +57,19 @@ public class CompositeDeviceService : ICompositeDeviceService
         return _responseFactory.Success(compositeDevice);
     }
 
-    public async Task<BaseResponse> CreateCompositeDeviceAsync(CompositeDeviceWrite deviceApiModel)
+    public async Task<WorkshopItemResponse> CreateCompositeDeviceAsync(CompositeDeviceWrite deviceApiModel)
     {
         var modelValidation = await _writeValidator.ValidateAsync(deviceApiModel);
 
         if (!modelValidation.IsValid)
-            return GenerateFailureResponse(modelValidation);
-        
+            return _responseFactory.Failure<WorkshopItemResponse>(
+                GenerateFailureMessage(modelValidation),
+                HttpStatusCode.UnprocessableEntity);
+
         var baseDevice = await _repositories.BaseDevices.GetBaseDeviceAsync(deviceApiModel.BasisId);
 
         if (baseDevice == null)
-            return _responseFactory.Failure<BaseResponse>(
+            return _responseFactory.Failure<WorkshopItemResponse>(
                 ResponseMessages.WorkshopItemNotFound(deviceApiModel.BasisId), 
                 HttpStatusCode.NotFound);
 
@@ -78,7 +80,7 @@ public class CompositeDeviceService : ICompositeDeviceService
 
         if (notFoundConnectors.Count != 0)
         {
-            return _responseFactory.Failure<BaseResponse>(
+            return _responseFactory.Failure<WorkshopItemResponse>(
                 ResponseMessages.WorkshopItemsNotFound(notFoundConnectors),
                 HttpStatusCode.NotFound);
         }
@@ -89,13 +91,13 @@ public class CompositeDeviceService : ICompositeDeviceService
             var compositeDeviceDto = await 
                 _compositeDeviceFactory.ConstructCompositeDeviceWriteDto(baseDevice, connectors, deviceApiModel);
 
-            await _repositories.CompositeDevices.CreateCompositeDeviceAsync(compositeDeviceDto);
+            var item = await _repositories.CompositeDevices.CreateCompositeDeviceAsync(compositeDeviceDto);
             await _repositories.SaveChangesAsync();
 
-            return _responseFactory.Success();
+            return _responseFactory.Success(item);
         }
 
-        return _responseFactory.Failure<BaseResponse>(ResponseMessages.CoreRulesViolation, HttpStatusCode.Conflict);
+        return _responseFactory.Failure<WorkshopItemResponse>(ResponseMessages.CoreRulesViolation, HttpStatusCode.Conflict);
     }
 
     public async Task<BaseResponse> UpdateCompositeDeviceAsync(CompositeDeviceUpdate deviceApiModel, int id)
@@ -103,7 +105,9 @@ public class CompositeDeviceService : ICompositeDeviceService
         var modelValidation = await _updateValidator.ValidateAsync(deviceApiModel);
 
         if (!modelValidation.IsValid)
-            return GenerateFailureResponse(modelValidation);
+            return _responseFactory.Failure<BaseResponse>(
+                GenerateFailureMessage(modelValidation),
+                HttpStatusCode.UnprocessableEntity);
 
         var compositeDevice = await _repositories.CompositeDevices.GetCompositeDeviceAsync(id);
 
@@ -135,28 +139,8 @@ public class CompositeDeviceService : ICompositeDeviceService
         return _responseFactory.Success();
     }
 
-    private async Task UpdateCompositeDeviceParts(
-        BaseDeviceReadDto baseDevice,
-        List<ConnectorReadDto> connectors)
+    private string GenerateFailureMessage(ValidationResult modelValidation)
     {
-        var updateBaseDeviceTask = _repositories.BaseDevices.UpdateBaseDeviceAsync(
-            _mapper.Map(baseDevice, new BaseDeviceWriteDto()), baseDevice.Id);
-        var updateConnectorsTasks = new List<Task>();
-
-        foreach (var connector in connectors)
-        {
-            updateConnectorsTasks.Add(_repositories.Connectors.UpdateConnectorAsync(
-                _mapper.Map(connector, new ConnectorWriteDto()), connector.Id));
-        }
-
-        await Task.WhenAll(updateConnectorsTasks);
-        await updateBaseDeviceTask;
-    }
-
-    private BaseResponse GenerateFailureResponse(ValidationResult modelValidation)
-    {
-        return _responseFactory.Failure<BaseResponse>(
-                modelValidation.Errors.ConvertAll(c => c.ErrorMessage).Aggregate((a, b) => $"{a}; {b}"),
-                HttpStatusCode.UnprocessableEntity);
+        return modelValidation.Errors.ConvertAll(c => c.ErrorMessage).Aggregate((a, b) => $"{a}; {b}");
     }
 }
