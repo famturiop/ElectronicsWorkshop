@@ -1,5 +1,6 @@
 ﻿using ElectronicsWorkshop.Core.Application.ApiModels;
 using ElectronicsWorkshop.Core.Application.ServicesInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -96,6 +97,7 @@ namespace ElectronicsWorkshop.Controllers
             Description = "Deletes a composite device",
             Summary = "Deletes a composite device")]
         [HttpDelete("{id}")]
+        [Authorize("DeleteAccess")]
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _compositeDeviceService.DeleteCompositeDeviceAsync(id);
