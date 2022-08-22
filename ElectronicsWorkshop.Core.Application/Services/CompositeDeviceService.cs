@@ -60,16 +60,20 @@ public class CompositeDeviceService : ICompositeDeviceService
         var modelValidation = await _writeValidator.ValidateAsync(deviceApiModel);
 
         if (!modelValidation.IsValid)
+        {
             return _responseFactory.Failure<WorkshopItemResponse>(
                 GenerateFailureMessage(modelValidation),
                 HttpStatusCode.UnprocessableEntity);
+        }
 
         var baseDevice = await _repositories.BaseDevices.GetBaseDeviceAsync(deviceApiModel.BasisId);
 
         if (baseDevice == null)
+        {
             return _responseFactory.Failure<WorkshopItemResponse>(
                 ResponseMessages.WorkshopItemNotFound(deviceApiModel.BasisId),
                 HttpStatusCode.NotFound);
+        }
 
         var connectors =
             (await _repositories.Connectors.GetVariableAmountOfConnectorsAsync(deviceApiModel.ConnectorIds)).ToList();
@@ -103,16 +107,20 @@ public class CompositeDeviceService : ICompositeDeviceService
         var modelValidation = await _updateValidator.ValidateAsync(deviceApiModel);
 
         if (!modelValidation.IsValid)
+        {
             return _responseFactory.Failure<BaseResponse>(
                 GenerateFailureMessage(modelValidation),
                 HttpStatusCode.UnprocessableEntity);
+        }
 
         var compositeDevice = await _repositories.CompositeDevices.GetCompositeDeviceAsync(id);
 
         if (compositeDevice == null)
+        {
             return _responseFactory.Failure<BaseResponse>(
                 ResponseMessages.WorkshopItemNotFound(id),
                 HttpStatusCode.NotFound);
+        }
 
         if (_compositeDeviceFactory.HaveEnoughBaseDevices(compositeDevice.Basis, deviceApiModel.Quantity) &&
             _compositeDeviceFactory.HaveEnoughConnectors(compositeDevice.Connectors, deviceApiModel.Quantity))
